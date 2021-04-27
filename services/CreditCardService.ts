@@ -1,4 +1,5 @@
 import { CreditCard } from "../models/CreditCard"
+import {User} from "../models/User";
 
 const CreditCardService = {
 
@@ -6,10 +7,20 @@ const CreditCardService = {
             console.log("Pidiendo los datos")
             return await CreditCard.find({});
         },
+        get: async (Id : String) => {
+            console.log("Pidiendo los datos")
+            return await CreditCard.find({IdProducto :Id });
+        },
         create: async (data : any) => {
             console.log("Publicando datos")
-            const creditcard = new CreditCard(data);
+            const creditcard = new CreditCard(data);           
+            const user = data.IdUsuario;
+            const dato = data.IdProducto;
             creditcard.save();
+            await User.findOneAndUpdate(
+                { _id: user }, 
+                { $push: { TarjetasCreditoActuales: dato } },
+            ); 
             return creditcard;
         },
         update: async (data : any)=>{
@@ -24,8 +35,13 @@ const CreditCardService = {
             // delete data.CantidadDisponible;
             return await CreditCard.where({IdProducto : id}).update(data);
         },
-        delete:async (id : string)=>{
+        delete:async (id : string, usuario: string)=>{
             console.log("Actualizando datos");
+            
+            await User.findOneAndUpdate(
+                { _id: usuario }, 
+                { $pull: { TarjetasCreditoActuales: id } },
+            );
             return await CreditCard.deleteOne({IdProducto : id});
         }  
     
