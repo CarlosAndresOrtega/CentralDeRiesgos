@@ -1,11 +1,12 @@
+import { ObjectId } from 'bson';
 import mongoose from 'mongoose';
 
 const CreditsSchema = new mongoose.Schema({
     
-        IdProducto : {
-            type: String,
-            required: true
-        },
+        // _id : {
+        //     type: ObjectId,
+        //     required: true
+        // },
         IdUsuario : {
             type: String,
             require: true

@@ -20,11 +20,11 @@ const CreditCardController = {
     get: async (req: Request, res: Response) => {
         try {
             // const data: Array<String> = [req.params.TypeDocument, req.params.NDocument];
-            const IdProducto = req.params.IdProducto;
+            const _id = req.params._id;
 
-            const CreditCards = await CreditCardService.get(IdProducto);
+            const CreditCards = await CreditCardService.get(_id);
             if (CreditCards == "") {
-                res.status(200).send("Usuario no encontrado");
+                res.status(200).send("Tarjeta de credito no encontrado");
             } else {
                 res.status(200).json(CreditCards);
             }
@@ -42,7 +42,7 @@ const CreditCardController = {
         try {
             const data = req.body
             // checkKeys(CreditCardI,req.body);
-            checkKeys(["IdProducto", "IdUsuario", "IdEntidad"], data);
+            checkKeys(["IdUsuario", "IdEntidad"], data);
             const credits = await CreditCardService.create(data);
             res.status(200).send(credits);
         } catch (error) {
@@ -57,9 +57,13 @@ const CreditCardController = {
         try {
             const data = req.body
             // checkKeys(CreditCardI,req.body);
-            checkKeys(["IdProducto"], data);
+            checkKeys(["_id"], data);
             const credits = await CreditCardService.update(data);
-            res.status(200).send(credits);
+            if (credits == "") {
+                res.status(200).send("Tarjeta de credito no encontrado");
+            } else {
+                res.status(200).json(credits);
+            }
         } catch (error) {
             console.log(error.stack && error.stack || error);
             res.status(500).send({
@@ -70,11 +74,15 @@ const CreditCardController = {
     },
     delete: async (req: Request, res: Response) => {
         try {
-            checkKeys(["IdProducto", "IdUsuario"], req.body);
-            const data = req.body.IdProducto;
+            checkKeys(["_id", "IdUsuario"], req.body);
+            const data = req.body._id;
             const data2 = req.body.IdUsuario;
             const credits = await CreditCardService.delete(data, data2);
-            res.status(200).send(credits);
+            if (credits == "") {
+                res.status(200).send("Tarjeta de credito no encontrado");
+            } else {
+                res.status(200).json(credits);
+            }
         } catch (error) {
             console.log(error.stack && error.stack || error);
             res.status(500).send({

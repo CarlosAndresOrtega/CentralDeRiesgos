@@ -18,11 +18,11 @@ const CreditsController = {
     get: async (req: Request, res: Response) => {
         try {
             // const data: Array<String> = [req.params.TypeDocument, req.params.NDocument];
-            const IdProducto = req.params.IdProducto;
+            const IdProducto = req.params._id;
 
             const CreditCards = await CreditsService.get(IdProducto);
             if (CreditCards == "") {
-                res.status(200).send("Usuario no encontrado");
+                res.status(200).send("Credito no encontrado");
             } else {
                 res.status(200).json(CreditCards);
             }
@@ -40,7 +40,7 @@ const CreditsController = {
         try {
             const data = req.body
             // checkKeys(CreditCardI,req.body);
-            checkKeys(["IdProducto","IdUsuario","IdEntidad"], data);
+            checkKeys(["IdUsuario","IdEntidad"], data);
             const credits = await CreditsService.create(data);
             res.status(200).send(credits);
         } catch (error) {
@@ -55,9 +55,15 @@ const CreditsController = {
         try {
             const data = req.body
             // checkKeys(CreditCardI,req.body);
-            checkKeys(["IdProducto"], data);
+            checkKeys(["_id"], data);
             const credits = await CreditsService.update(data);
-            res.status(200).send(credits);
+            if (credits == "") {
+                res.status(200).send("Credito no encontrado");
+            } else {
+                res.status(200).json(credits);
+                // res.status(200).send(credits);
+            }
+            
         } catch (error) {
             console.log(error.stack && error.stack || error);
             res.status(500).send({
@@ -68,11 +74,16 @@ const CreditsController = {
     },
     delete:async (req:Request, res: Response) => {
         try {
-            checkKeys(["IdProducto", "IdUsuario"], req.body);
-            const data = req.body.IdProducto;
-            const data2 = req.body.IdUsuario;;
+            checkKeys(["_id", "IdUsuario"], req.body);
+            const data = req.body._id;
+            const data2 = req.body.IdUsuario;
             const credits = await CreditsService.delete(data, data2);
-            res.status(200).send(credits);
+            if (credits == "") {
+                res.status(200).send("Credito no encontrado");
+            } else {
+                res.status(200).json(credits);
+                // res.status(200).send(credits);
+            }
         } catch (error) {
             console.log(error.stack && error.stack || error);
             res.status(500).send({

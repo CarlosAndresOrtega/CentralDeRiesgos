@@ -1,11 +1,12 @@
+import { Int32 } from 'bson';
 import mongoose from 'mongoose';
 
 const CreditCardSchema = new mongoose.Schema({
     
-    IdProducto : {
-        type: String,
-        require: true
-    },
+    // _id : {
+    //     type: String,
+    //     require: true
+    // },
     IdUsuario : {
         type: String,
         require: true

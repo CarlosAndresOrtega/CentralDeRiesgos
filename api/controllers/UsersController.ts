@@ -41,7 +41,7 @@ const UsersController = {
                     res.status(200).send("Digite solo numeros para el numero de documento");
                 }
             } else {
-                res.status(200).send("Su tipo de cedula esta mal (CC, NIT o CE )");
+                res.status(200).send("Su tipo de documento esta mal (CC, NIT o CE )");
             }
             // ;
         } catch (error) {
