@@ -42,7 +42,7 @@ const CreditsController = {
             // checkKeys(CreditCardI,req.body);
             checkKeys(["IdUsuario","IdEntidad"], data);
             const credits = await CreditsService.create(data);
-            res.status(200).send(credits);
+            res.status(200).json(credits);
         } catch (error) {
             console.log(error.stack && error.stack || error);
             res.status(500).send({
