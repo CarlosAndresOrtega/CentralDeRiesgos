@@ -19,7 +19,7 @@ const CreditsService = {
         const user = data.IdUsuario;
         const query = await User.findOne({ _id: user });
 
-        if (query.CapacidadEndeudamiento >= data.TotalCupoTc) {
+        if (query.CapacidadEndeudamiento >= data.TotalCupoCredito) {
             const credit = new Credit(data);
             credit.save();
             const Sid = credit._id.toString();
